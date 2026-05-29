@@ -146,15 +146,25 @@ st.markdown("Each host's risk score is built from four signals:")
 col1, col2 = st.columns(2)
 
 with col1:
-    signals = ['Recency\n(Days since last review)', 'Frequency\n(Review rate drop)', 
-               'Availability\n(Calendar pullback)', 'Rating\n(Score decline)']
-    weights = [25, 25, 25, 25]
-    fig_signals = go.Figure(go.Bar(
-        x=weights, y=signals, orientation='h',
-        marker_color=['#6366f1', '#8b5cf6', '#a78bfa', '#c4b5fd']
-    ))
-    fig_signals.update_layout(title='Signal Weights in Churn Score', xaxis_title='Max Points (out of 100)')
-    st.plotly_chart(fig_signals, use_container_width=True)
+    # Scatter: Days Inactive vs Churn Score, colored by risk tier
+    color_map = {'High': '#ef4444', 'Medium': '#f59e0b', 'Low': '#22c55e'}
+    fig_scatter = px.scatter(
+        host_stats,
+        x='days_since_last_review',
+        y='avg_churn_score',
+        color='risk_tier',
+        color_discrete_map=color_map,
+        opacity=0.5,
+        title='Days Inactive vs Churn Risk Score',
+        labels={
+            'days_since_last_review': 'Days Since Last Review',
+            'avg_churn_score': 'Churn Risk Score',
+            'risk_tier': 'Risk Tier'
+        }
+    )
+    fig_scatter.add_hline(y=65, line_dash="dash", line_color="red", annotation_text="High Risk")
+    fig_scatter.add_hline(y=40, line_dash="dash", line_color="orange", annotation_text="Medium Risk")
+    st.plotly_chart(fig_scatter, use_container_width=True)
 
 with col2:
     top20 = host_stats.nlargest(20, 'avg_churn_score')
