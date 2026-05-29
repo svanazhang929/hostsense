@@ -1,6 +1,6 @@
 # 🏠 HostSense — AI-Powered Host Retention Intelligence
 
-An end-to-end agentic workflow that analyses 7,646 Airbnb hosts, identifies churn risk, and generates personalised AI retention strategies automatically. A workflow that used to require hours of manual effort every week now runs in under 10 minutes.
+An end-to-end agentic workflow that analyses 7,646 Airbnb hosts, identifies churn risk, and generates personalised AI retention strategies automatically.
 
 **[Live Demo →](https://hostsense-mrt7ntqipxtcrebrooztti.streamlit.app)**
 
@@ -20,18 +20,16 @@ The manual process fails in four ways:
 
 ## The Solution
 
-A three-layer agentic workflow that automates the entire process end-to-end.
-
 **Layer 1 — Signal Detection (Python + SQL)**
-Four behavioural signals scored per host: recency of last review, frequency drop, calendar pullback, and rating trajectory. Every host gets a Churn Risk Score from 0–100. 822 hosts flagged as high risk, representing $12.3M in estimated annual revenue.
+Four behavioural signals scored per host: recency of last review, frequency drop, calendar pullback, and rating trajectory. Every host gets a Churn Risk Score from 0–100.
 
 **Layer 2 — AI Agent Diagnosis (Claude API)**
-- Agent 1 analyses each high-risk host's signal profile and generates a specific churn diagnosis — primary reason, three warning signals, estimated timeline
-- Agent 2 takes that diagnosis and produces a tailored retention strategy — immediate action, personalised offer, expected outcome
-- Two agents run in sequence. The output of one becomes the context for the next.
+- Agent 1 diagnoses churn reason and warning signals per high-risk host
+- Agent 2 generates a personalised retention strategy based on Agent 1's output
+- Two agents run in sequence — the output of one becomes the context for the next
 
 **Layer 3 — Live Dashboard (Streamlit)**
-Risk distribution across all 7,646 hosts, AI analysis per account, filterable by urgency and messaging tone. No manual reporting. Always on.
+Risk distribution across all 7,646 hosts, AI analysis per account, filterable by urgency. Always on. No manual reporting.
 
 ---
 
@@ -47,6 +45,16 @@ Risk distribution across all 7,646 hosts, AI analysis per account, filterable by
 
 ---
 
+## Project Structure
+
+- `1_build_database.py` — Data ingestion, cleaning, churn risk scoring
+- `2_ai_analysis.py` — Claude API agents (churn diagnosis + retention strategy)
+- `3_dashboard.py` — Streamlit dashboard
+- `airbnb_churn.db` — SQLite database
+- `requirements.txt` — Dependencies
+
+---
+
 ## Tech Stack
 
 | Layer | Tools |
@@ -58,9 +66,6 @@ Risk distribution across all 7,646 hosts, AI analysis per account, filterable by
 | Deployment | Streamlit Cloud |
 | Data source | Inside Airbnb (Sydney, Sep 2025) |
 
----
-
-## Project Structure
 ---
 
 ## Key Insights
